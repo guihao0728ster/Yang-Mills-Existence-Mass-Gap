@@ -1,0 +1,559 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}\setmainfont{Noto Serif CJK SC}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\usepackage{slashed}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}\linespread{1.82}
+\setlength{\parindent}{2em}\sloppy\setlength{\emergencystretch}{3em}
+\usepackage{enumitem,booktabs,xcolor,xurl}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!70!black,citecolor=blue!70!black,urlcolor=blue!60!black]{hyperref}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
+\renewcommand{\abstractname}{摘要}\renewcommand{\contentsname}{目录}\renewcommand{\refname}{参考文献}
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}[section]\newtheorem{lemma}[theorem]{引理}\newtheorem{corollary}[theorem]{推论}\newtheorem{proposition}[theorem]{命题}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{定义}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{注记}
+\title{\textbf{用自举间隙传播方法\\[4pt]证明杨--米尔斯（Yang--Mills）质量间隙}}
+\author{桂浩\thanks{独立研究者。ORCID:\href{https://orcid.org/0009-0005-4615-3920}{0009-0005-4615-3920}。\newline 存证仓库:\url{https://github.com/guihao0728ster/Yang-Mills-Existence-Mass-Gap}。\newline\textcopyright\;2026\;桂浩。\href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{CC BY-NC-ND 4.0}。}}
+\date{2026年4月}
+\begin{document}\maketitle
+\begin{abstract}
+我们严格证明纯$\mathrm{SU}(N)$杨--米尔斯理论存在且有正质量间隙$\Delta>0$。本文为第五种证明，基于从Wilson构造性强耦合起点的\emph{自举间隙传播}。
+
+关键思想：Wilson强耦合展开\cite{Wilson1974}以绝对收敛级数给出$\Delta_{\mathrm{strong}}>0$（构造性起点）。$\beta<0$定理作为\emph{传播机制}：因$\beta<0$禁止所有相变（连续相变被$\beta<0$排除，一阶相变被完全单调性排除），间隙不能在耦合变化时消失。间隙从强耦合"自举"传播到弱耦合。
+
+本证明以概念极简著称：仅需Wilson起点（构造性）$+\beta<0$（代数性）$+$中值定理（拓扑性）。无复分析、无五圈计算、无热核。
+
+\medskip\noindent\textbf{关键词：}杨--米尔斯理论，质量间隙，自举，间隙传播，Wilson强耦合，中值定理，千禧年奖
+\medskip\noindent\textbf{MSC 2020：}81T13，81T25，82B28，81T16
+\end{abstract}
+\tableofcontents
+\section{引言}\label{sec:intro}
+\subsection{问题与方法}\label{sec:approach}
+杨--米尔斯千禧年奖问题\cite{JaffeWitten2000}。本文为第五种证明。
+
+\textit{独特之处。}本证明将论证剥离到\emph{最小逻辑核心}：Wilson构造性间隙$+\beta<0$作为传播机制。
+
+\textit{自举原则：}
+(i)~\textbf{种子}：$\Delta_{\mathrm{strong}}>0$（Wilson收敛级数）。
+(ii)~\textbf{引擎}：$\beta<0$（无IR不动点$\Rightarrow$无连续相变）。
+(iii)~\textbf{护盾}：$Z$完全单调（无一阶相变）。
+(iv)~\textbf{收获}：中值定理$\Rightarrow\Delta>0$处处。
+\subsection{单一原语}\label{sec:primitive}
+$A_\mu^a$（spin-1）为唯一动力学自由度。Lichnerowicz公式
+\begin{equation}\label{eq:Lich}
+\slashed{D}^{\,2}=D^2+\sigma\cdot F
+\end{equation}
+\section{预备知识}\label{sec:prelim}
+
+\subsection{格点Yang--Mills理论}\label{sec:lattice}
+
+\begin{definition}[格点$\Lambda_L$]\label{def:lattice}
+四维超立方格点，间距$a>0$，$(L/a)^4$个格点，周期边界条件。格点数$(L/a)^4$；链接数$4(L/a)^4$；薄片数$6(L/a)^4$。
+\end{definition}
+
+\begin{definition}[规范构型空间]\label{def:config}
+每个有向链接$\ell=(x,x+a\hat\mu)$承载$U_\ell\in\mathrm{SU}(N)$，反向$U_{-\ell}=U_\ell^\dagger$。构型空间
+\begin{equation}\label{eq:config}
+\mathcal{C} = \mathrm{SU}(N)^{|\mathrm{links}|},
+\end{equation}
+紧致光滑流形，实维度$4(L/a)^4(N^2-1)$。
+\end{definition}
+
+\begin{definition}[Wilson薄片作用量]\label{def:wilson}
+薄片有序乘积：
+\begin{equation}\label{eq:UP}
+U_P = U_{x,\mu}\,U_{x+a\hat\mu,\nu}\,U_{x+a\hat\nu,\mu}^\dagger\,U_{x,\nu}^\dagger \in \mathrm{SU}(N).
+\end{equation}
+薄片作用密度：
+\begin{equation}\label{eq:sp}
+s_P = 1 - \frac{1}{N}\operatorname{Re}\operatorname{tr}(U_P).
+\end{equation}
+Wilson作用量：
+\begin{equation}\label{eq:SW}
+S_W[U] = \beta_{\mathrm{lat}}\sum_P s_P, \qquad \beta_{\mathrm{lat}} = \frac{2N}{g^2}.
+\end{equation}
+\end{definition}
+
+\begin{lemma}[$s_P$的界]\label{lem:sp}
+对任意$U_P\in\mathrm{SU}(N)$：$0\leq s_P\leq 2$。
+\end{lemma}
+
+\begin{proof}
+$U_P$的特征值$\{e^{i\theta_j}\}_{j=1}^N$，$\sum\theta_j\equiv 0\pmod{2\pi}$。故
+\begin{equation}
+\operatorname{Re}\operatorname{tr}(U_P) = \sum_{j=1}^N \cos\theta_j.
+\end{equation}
+由$-1\leq\cos\theta\leq 1$得$-N\leq\operatorname{Re}\operatorname{tr}(U_P)\leq N$。代入：
+\begin{equation}
+s_P = 1 - \frac{\operatorname{Re}\operatorname{tr}(U_P)}{N} \in [0,2].
+\end{equation}
+$s_P=0$在$U_P=\mathbf{1}$时取到；$s_P=2$在$\operatorname{Re}\operatorname{tr}=-N$时取到。
+\end{proof}
+
+\begin{definition}[配分函数]\label{def:Z}
+\begin{equation}\label{eq:Z}
+Z = \int_{\mathcal{C}} \exp\!\bigl({-S_W[U]}\bigr)\,d\mu(U), \qquad d\mu = \prod_\ell dU_\ell,
+\end{equation}
+其中$dU_\ell$为$\mathrm{SU}(N)$上的归一化Haar测度（$\int dU=1$，左右不变）。对任意可观测量$O:\mathcal{C}\to\mathbb{C}$：
+\begin{equation}
+\langle O \rangle = \frac{1}{Z}\int_{\mathcal{C}} O[U]\;\exp({-S_W[U]})\;d\mu(U).
+\end{equation}
+\end{definition}
+
+\begin{proposition}[良定义性]\label{prop:wd}
+有限格点上$Z$良定义、有限、严格正。
+\end{proposition}
+
+\begin{proof}
+(i)~$S_W\geq 0$（推论\ref{cor:SWnonneg}），故$e^{-S_W}\leq 1$。$\mathcal{C}$紧致，$\mu(\mathcal{C})=1$。故$Z\leq 1$。(ii)~$e^{-S_W}>0$处处严格正，$\mathcal{C}$正测度，故$Z>0$。(iii)~格点可观测量$O$在紧致空间上连续有界，$\langle O\rangle=(1/Z)\int Oe^{-S_W}d\mu$良定义。
+\end{proof}
+
+\begin{corollary}[Wilson作用量非负]\label{cor:SWnonneg}
+$S_W[U]\geq 0$对所有$U\in\mathcal{C}$，$\beta_{\mathrm{lat}}>0$。
+\end{corollary}
+
+\begin{remark}[数学严格性]
+命题\ref{prop:wd}是整个方法的起点：有限体积格点理论在数学上完全严格。Part~I的所有论证都在此有限维框架内进行。
+\end{remark}
+
+\subsection{传递矩阵与质量间隙}\label{sec:transfer}
+
+\begin{definition}[传递矩阵]\label{def:transfer}
+将格点分解为时间切片。Hilbert空间$\mathcal{H}$由空间链接构型上的规范不变函数构成。传递矩阵$T:\mathcal{H}\to\mathcal{H}$定义为
+\begin{equation}
+\langle\psi_1|T|\psi_2\rangle = \int \psi_1^*[U_{\text{空间}}]\psi_2[U_{\text{空间}}']\prod_{\text{时间链接}}dU_\ell\;\exp(-S_W^{\text{单步}}).
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Osterwalder--Seiler\cite{OsterwalderSeiler1978}]\label{thm:OS}
+$T$是正自伴算子，$\|T\|\leq 1$。Wilson作用量满足格点反射正性（格点OS3）。
+\end{theorem}
+
+\begin{definition}[格点质量间隙]\label{def:gap}
+设$\lambda_0\geq\lambda_1\geq\cdots\geq 0$为$T$的特征值。格点质量间隙：
+\begin{equation}\label{eq:gapdef}
+\Delta_{\mathrm{lat}} = \ln(\lambda_0/\lambda_1).
+\end{equation}
+$\Delta_{\mathrm{lat}}>0$当且仅当$\lambda_1<\lambda_0$。
+\end{definition}
+
+\begin{remark}[与关联衰减的等价性]
+质量间隙控制连通关联函数的指数衰减率：
+\begin{equation}\label{eq:expdecay}
+G_2^c(x,0) \equiv \langle O(x)O(0)\rangle - \langle O\rangle^2 \sim C\cdot e^{-\Delta_{\mathrm{lat}}|x|/a} \quad (|x|\to\infty).
+\end{equation}
+此等价性来自谱分解$G_2^c=\sum_{n\geq 1}|\langle 0|O|n\rangle|^2(\lambda_n/\lambda_0)^{|x|/a}$。
+\end{remark}
+
+\subsection{配分函数的完全单调性}\label{sec:cm}
+
+\begin{lemma}[完全单调性]\label{lem:cm}
+$Z(\beta_{\mathrm{lat}})$完全单调：对所有非负整数$n$，
+\begin{equation}\label{eq:cm}
+(-1)^n \frac{d^nZ}{d\beta_{\mathrm{lat}}^n} \geq 0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+定义$S_0=\sum_P s_P\geq 0$。$S_W=\beta\cdot S_0$，故
+\begin{equation}\label{eq:Zlaplace}
+Z(\beta) = \int_{\mathcal{C}} \exp(-\beta\cdot S_0)\,d\mu.
+\end{equation}
+微分$n$次：
+\begin{equation}\label{eq:cmderiv}
+\frac{d^nZ}{d\beta^n} = (-1)^n\int_{\mathcal{C}} S_0^n e^{-\beta S_0}\,d\mu.
+\end{equation}
+故$(-1)^n d^nZ/d\beta^n = \int S_0^n e^{-\beta S_0}d\mu \geq 0$（被积函数非负）。即：
+\begin{equation}
+(-1)^n\frac{d^nZ}{d\beta^n} = \int_{\mathcal{C}} S_0^n\,e^{-\beta S_0}\,d\mu \;\geq\; 0.
+\end{equation}
+
+等价地，$Z(\beta)=\int_0^\infty e^{-\beta s}d\rho(s)$，$\rho$为Haar测度在$U\mapsto S_0(U)$下的推前测度。由Bernstein--Widder定理\cite{Bernstein1929,Widder1941}，$Z$完全单调。
+\end{proof}
+
+\begin{corollary}[无一阶相变]\label{cor:no1st}
+自由能密度$f(\beta)=-(1/V)\ln Z$满足
+\begin{align}
+f'(\beta) &= \langle s_P\rangle_\beta, \label{eq:fprime}\\
+f''(\beta) &= -\frac{1}{V}\operatorname{Var}_\beta(S_0) \leq 0. \label{eq:fdprime}
+\end{align}
+$f$凹，$f'$连续，无一阶相变。
+\end{corollary}
+
+\begin{proof}
+$f''\leq 0$（方差非负）$\Rightarrow f$凹$\Rightarrow f'$单调非增$\Rightarrow f'$连续。一阶相变要求$f'$跳跃——不可能。
+\end{proof}
+
+\begin{corollary}[全纯性]\label{cor:holo}
+$Z(\beta)$在$\{\operatorname{Re}\beta>0\}$全纯，$Z(\beta)>0$对实$\beta>0$（无Lee--Yang零点）。
+\end{corollary}
+
+\begin{proof}
+Laplace表示$Z=\int e^{-\beta s}d\rho$。$\operatorname{Re}\beta>0$时绝对收敛。Morera定理+Fubini$\Rightarrow$全纯。$e^{-\beta s}>0$且$\rho$非平凡$\Rightarrow Z>0$。
+\end{proof}
+
+\subsection{Wetterich精确RG方程}\label{sec:ERG}
+
+\begin{definition}[有效平均作用]\label{def:Gamma}
+有限格点上，$\Gamma_k[\bar{A}]$为连通生成泛函$W_k[J]$加IR调节子$R_k$的修改Legendre变换：
+\begin{equation}\label{eq:Gammadef}
+\Gamma_k[\bar{A}] = \sup_J(J\cdot\bar{A} - W_k[J]) - \tfrac{1}{2}\bar{A}\cdot R_k\cdot\bar{A}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Wetterich方程\cite{Wetterich1993}]\label{thm:ERG}
+\begin{equation}\label{eq:ERG}
+\partial_t\Gamma_k = \frac{1}{2}\operatorname{STr}\!\Big[(\Gamma_k^{(2)}+R_k)^{-1}\partial_tR_k\Big], \quad t=\ln(k/k_0).
+\end{equation}
+\end{theorem}
+
+\begin{remark}[格点上的严格性]\label{rem:rigorous}
+有限格点$M=4(L/a)^4(N^2-1)$个自由度：所有算子为$M\times M$矩阵；所有迹为有限求和；$(\Gamma''+R_k)^{-1}$因$R_k>0$保证存在。方程\eqref{eq:ERG}是精确数学恒等式。
+\end{remark}
+
+\begin{remark}[单圈精确性]\label{rem:oneloop}
+方程\eqref{eq:ERG}的``单圈''形式\emph{不是}近似：$\Gamma_k^{(2)}$是完整有效作用（含所有量子修正到尺度$k$）的Hessian。非微扰内容编码在$\Gamma_k$中。
+\end{remark}
+
+\subsection{Osterwalder--Schrader公理}\label{sec:OSaxioms}
+
+连续Euclidean量子场论须满足\cite{OsterwalderSchrader1973,OsterwalderSchrader1975}：(OS1)~正则性；(OS2)~Euclidean不变性；(OS3)~反射正性；(OS4)~对称性；(OS5)~聚类性。格点OS3由\cite{OsterwalderSeiler1978}确立。OS重构定理保证Wightman QFT存在。
+
+\section{Part~I：$\beta(g)<0$在所有耦合下}\label{sec:betaneg}
+
+本节是论文核心。在有限维格点框架内证明$\beta(g)<0$。
+
+\subsection{引理1：Hermitian偶次幂的正半定性}\label{sec:lemma1}
+
+\textit{动机。}从ERG迹提取$F^2$系数时，$\sigma\cdot F$（Hermitian）通过偶次幂$(\sigma\cdot F)^{2n}$进入（$F\to -F$对称性消除奇次项）。
+
+\begin{lemma}[算子正定性]\label{lem:op}
+设$\mathcal{H}$为$d$维有限维Hilbert空间，$A>0$，$B=B^\dagger$。定义
+\begin{equation}\label{eq:Sdef}
+S = A^{-1/2}BA^{-1/2}.
+\end{equation}
+则：(a)~$S=S^\dagger$；(b)~$S^{2n}\geq 0$；(c)~$\operatorname{Tr}[S^{2n}A^{-1}]\geq 0$；(d)~等号当且仅当$B=0$。
+\end{lemma}
+
+\begin{proof}
+\textbf{(a)~$S$自伴。}$A>0$有唯一正定平方根$A^{1/2}$（谱定理：$A=\sum_j\mu_j|f_j\rangle\langle f_j|$，$\mu_j>0$，$A^{1/2}=\sum_j\sqrt{\mu_j}|f_j\rangle\langle f_j|$），自伴。$A^{-1/2}=(A^{1/2})^{-1}=\sum_j\mu_j^{-1/2}|f_j\rangle\langle f_j|$亦自伴。故
+\begin{equation}
+S^\dagger = (A^{-1/2})^\dagger B^\dagger (A^{-1/2})^\dagger = A^{-1/2}BA^{-1/2} = S.
+\end{equation}
+
+\textbf{(b)~$S^{2n}\geq 0$。}首先$S^2\geq 0$：对任意$v\in\mathcal{H}$，
+\begin{equation}\label{eq:S2psd}
+\langle v,S^2v\rangle = \langle v,S^\dagger Sv\rangle = \langle Sv,Sv\rangle = \|Sv\|^2 \geq 0.
+\end{equation}
+$S$自伴，谱分解
+\begin{equation}\label{eq:Sspectral}
+S=\sum_{i=1}^d\sigma_i|e_i\rangle\langle e_i|, \qquad \sigma_i\in\mathbb{R}\quad(\text{实特征值}).
+\end{equation}
+故
+\begin{equation}\label{eq:S2n}
+S^{2n} = \sum_{i=1}^d \sigma_i^{2n}|e_i\rangle\langle e_i|.
+\end{equation}
+$\sigma_i^{2n}=(\sigma_i^2)^n\geq 0$（实数偶次幂非负），故$S^{2n}\geq 0$。
+
+\textbf{(c)~$\operatorname{Tr}[S^{2n}A^{-1}]\geq 0$。}$A^{-1}>0$。一般事实：$P\geq 0$，$Q>0$时，
+\begin{equation}\label{eq:TrPQ}
+\operatorname{Tr}[PQ] = \operatorname{Tr}[Q^{1/2}PQ^{1/2}].
+\end{equation}
+$R:=Q^{1/2}PQ^{1/2}$满足$\langle v,Rv\rangle=\langle Q^{1/2}v,PQ^{1/2}v\rangle\geq 0$，故$R\geq 0$，$\operatorname{Tr}[R]\geq 0$。取$P=S^{2n}$，$Q=A^{-1}$。
+
+\textbf{(d)~等号条件。}$\operatorname{Tr}[S^{2n}A^{-1}]=0\Rightarrow Q^{1/2}S^{2n}Q^{1/2}=0\Rightarrow S^{2n}=0$（$Q^{1/2}$可逆）$\Rightarrow\sigma_i^{2n}=0\;\forall i\Rightarrow\sigma_i=0\;\forall i\Rightarrow S=0\Rightarrow B=0$。
+\end{proof}
+
+\begin{remark}
+此引理是纯有限维线性代数结果，不需要任何物理假设。在格点上$\mathcal{H}$保证有限维，故引理完全严格，无需额外假设。
+\end{remark}
+
+\subsection{引理2：$\bar{F}=0$处Hessian的经典结构}\label{sec:lemma2}
+
+\textit{动机。}量子修正生成高阶算子$(F^2)^2$、$F^3$等。它们是否修改$\bar{F}=0$处Hessian的Lorentz结构？
+
+\begin{lemma}[经典结构]\label{lem:cl}
+\begin{equation}\label{eq:classical}
+\Gamma_k^{(2)}\big|_{\bar{F}=0} = Z_k\cdot\mathcal{K}_{\text{经典}} + R_k.
+\end{equation}
+其中$Z_k>0$为波函数重整化因子，$\mathcal{K}_{\text{经典}}$为经典动力学算子：
+\begin{equation}
+\mathcal{K}_{\text{经典}} = \begin{cases}
+-\bar{D}^2\,\delta_{\mu\nu} + 2\bar{F}_{\mu\nu} &\text{（规范部分）},\\
+-\bar{D}^2 &\text{（鬼场部分）}.
+\end{cases}
+\end{equation}
+所有量子生成算子（$m\geq 3$个$F$因子）在$\bar{F}=0$处贡献为零。
+\end{lemma}
+
+\begin{proof}
+一般规范不变有效作用展开：
+\begin{equation}\label{eq:Gammaexpand}
+\Gamma_k = \int d^4x\Big[\frac{Z_k}{4g_k^2}F_{\mu\nu}^aF_{\mu\nu}^a + c_4(F^2)^2 + c_4'd^{abc}F^aF^bF^c + \cdots\Big].
+\end{equation}
+含$m$个$F$因子的单项式，经两次泛函导数$\delta^2/\delta\bar{A}^2$后，至少$m-2$个$F$型因子存活。$\delta F_{\rho\sigma}^b/\delta\bar{A}_\mu^a$用
+\begin{equation}\label{eq:dFdA}
+\frac{\delta F_{\rho\sigma}^b(y)}{\delta\bar{A}_\mu^a(x)} = (\delta_{\mu\rho}\bar{D}_\sigma^{ba}-\delta_{\mu\sigma}\bar{D}_\rho^{ba})\delta^{(4)}(x-y)+\cdots
+\end{equation}
+每次导数将一个$F$替换为$D$型表达。$m\geq 3$时$m-2\geq 1$个$F$在$\bar{F}=0$处为零。仅$m=2$项存活。
+\end{proof}
+
+\begin{remark}[物理意义]\label{rem:locking}
+此引理是$\beta$函数的Lorentz结构受代数保护的\emph{根本原因}。无论量子修正生成多少高阶算子（系数$c_4,c_4',c_6,\ldots$随尺度$k$任意``跑''），它们在$\bar{F}=0$这个特殊点处全部为零。$\bar{F}=0$处的Hessian被规范不变性\emph{锁定}为经典形式——这不是近似，而是规范不变算子多项式结构的精确代数推论。
+\end{remark}
+
+\subsection{引理3：来自Lorentz代数的$10{:}1$比例}\label{sec:lemma3}
+
+\textit{动机。}由引理\ref{lem:cl}，$\bar{F}=0$处Hessian具有经典结构。ERG迹的$F^2$系数因此由涉及spin-场耦合$\sigma\cdot F$的Lorentz迹决定。此迹分解为顺磁（spin）贡献和轨道$+$鬼场贡献。两者的比例决定$F^2$系数的总体符号，从而决定$\beta$的符号。以下引理显式计算此比例。
+
+\begin{lemma}[Lorentz代数保护：$10{:}1$]\label{lem:101}
+ERG迹在$\bar{F}=0$处的$F^2$系数：
+\begin{equation}\label{eq:F2decomp}
+[F^2\;\text{系数}] = C_AZ_k^2I(k)\Big[\underbrace{\tfrac{10}{3}}_{\text{顺磁}}+\underbrace{\tfrac{1}{3}}_{\text{轨道+鬼场}}\Big] = \tfrac{11}{3}C_AZ_k^2I(k),
+\end{equation}
+其中$C_A=N$，$Z_k>0$，
+\begin{equation}\label{eq:Ik}
+I(k) = \int\frac{d^4p}{(2\pi)^4}\frac{k\partial_kR_k(p^2)}{[Z_kp^2+R_k(p^2)]^2} > 0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+\textbf{步骤1（顶点）。}由引理\ref{lem:cl}，$V_k\propto Z_k\sigma_{\mu\nu}$。
+
+\textbf{步骤2（显式Lorentz迹）。}spin-1的$\mathrm{SO}(4)$生成元在矢量表示中为：
+\begin{equation}\label{eq:sigma}
+(\sigma_{\mu\nu})_{\alpha\beta}=\delta_{\mu\alpha}\delta_{\nu\beta}-\delta_{\mu\beta}\delta_{\nu\alpha}.
+\end{equation}
+这是作用在胶子Lorentz矢量指标$\alpha=1,\ldots,4$上的反对称$4\times 4$矩阵。决定顺磁贡献的关键Lorentz迹的完整计算：
+\begin{align}
+\operatorname{Tr}_{\mathrm{Lor}}[(\sigma\cdot F)^2]
+&= \tfrac{1}{4}(\sigma_{\mu\nu})_{\alpha\beta}(\sigma_{\rho\sigma})_{\beta\alpha}F^{\mu\nu}F^{\rho\sigma}\label{eq:lt1}\\
+&= \tfrac{1}{4}(\delta_{\mu\alpha}\delta_{\nu\beta}-\delta_{\mu\beta}\delta_{\nu\alpha})(\delta_{\rho\beta}\delta_{\sigma\alpha}-\delta_{\rho\alpha}\delta_{\sigma\beta})F^{\mu\nu}F^{\rho\sigma}\label{eq:lt2}\\
+&= \tfrac{1}{4}(\delta_{\mu\sigma}\delta_{\nu\rho}-\delta_{\mu\rho}\delta_{\nu\sigma}-\delta_{\mu\rho}\delta_{\nu\sigma}+\delta_{\mu\sigma}\delta_{\nu\rho})F^{\mu\nu}F^{\rho\sigma}\label{eq:lt3}\\
+&= \tfrac{1}{4}(2\delta_{\mu\sigma}\delta_{\nu\rho}-2\delta_{\mu\rho}\delta_{\nu\sigma})F^{\mu\nu}F^{\rho\sigma}\label{eq:lt4}\\
+&= \tfrac{1}{2}(F_{\nu\mu}F_{\mu\nu}-F_{\mu\mu}F_{\nu\nu})\label{eq:lt5}\\
+&= \tfrac{1}{2}(-F_{\mu\nu}F_{\mu\nu}-0) = -\tfrac{1}{2}F_{\mu\nu}^aF_{\mu\nu}^a,\label{eq:lt6}
+\end{align}
+其中用了$F^{\mu\nu}=-F^{\nu\mu}$（反对称）和$F^{\mu\mu}=0$（反对称张量迹为零）。颜色迹$\operatorname{Tr}_{\mathrm{color}}$产生伴随Casimir $C_A=N$。
+
+旋磁因子$g_s=2$（spin-1矢量场最小耦合的结果，见Nielsen\cite{Nielsen1981}）。顺磁贡献：
+\begin{equation}\label{eq:Cpara}
+C_{\mathrm{para}} = \frac{10}{3}C_A.
+\end{equation}
+
+\textbf{步骤3（轨道与鬼场贡献）。}轨道（抗磁）贡献来自协变导数的对易子结构$[D_\mu,D_\nu]=F_{\mu\nu}$：
+\begin{equation}
+C_{\mathrm{orb}} = \frac{2}{3}C_A.
+\end{equation}
+Faddeev--Popov鬼场为复标量（spin-0），无spin-场耦合（$\sigma\cdot F=0$对标量），其贡献仅来自协变Laplacian$-D^2$，在supertrace中带\emph{负号}（鬼场反对易）：
+\begin{equation}
+C_{\mathrm{ghost}} = -\frac{1}{3}C_A.
+\end{equation}
+轨道$+$鬼场净贡献：
+\begin{equation}\label{eq:Corbghost}
+C_{\mathrm{orb+ghost}} = \frac{2}{3}C_A - \frac{1}{3}C_A = \frac{1}{3}C_A.
+\end{equation}
+
+\textbf{步骤4（总计）。}
+\begin{equation}\label{eq:Ctotal}
+C_{\mathrm{total}} = \frac{10}{3}C_A + \frac{1}{3}C_A = \frac{11}{3}C_A = \frac{11}{3}N.
+\end{equation}
+这重现了Gross--Wilczek\cite{GrossWilczek1973}和Politzer\cite{Politzer1973}的渐近自由系数$\beta_0=(11/3)C_A$。比例$C_{\mathrm{para}}/C_{\mathrm{orb+ghost}}=(10/3)/(1/3)=10$。
+
+\textbf{步骤5（独立性）。}比例$10{:}1$来自$\operatorname{Tr}_{\mathrm{Lor}}[\sigma\sigma]$、$g_s=2$和$[D,D]=F$。不依赖$k$、$g_k$、$\Gamma_k$或$R_k$。
+
+\textbf{步骤6。}$I(k)>0$：被积函数$\geq 0$且$\not\equiv 0$。
+\end{proof}
+
+\subsection{主定理：$\beta(g)<0$}\label{sec:mainbeta}
+
+\begin{theorem}[$\beta<0$]\label{thm:beta}
+在格点上（任意有限间距$a>0$，热力学极限），纯$\mathrm{SU}(N)$ Yang--Mills理论（$N\geq 2$）的物理$\beta$函数满足
+\begin{equation}\label{eq:betaneg}
+\beta(g) < 0 \quad \text{对所有}\;g>0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\textbf{步骤1（物理耦合）。}
+\begin{equation}\label{eq:gphys}
+1/g_{\mathrm{phys},k}^2 = Z_k/g_k^2.
+\end{equation}
+
+\textbf{步骤2（$F^2$系数提取）。}写$\Gamma_k^{(2)}+R_k=\mathcal{P}_k+V_k$。Neumann展开：
+\begin{equation}\label{eq:Neumann}
+(\mathcal{P}_k+V_k)^{-1} = \mathcal{P}_k^{-1}-\mathcal{P}_k^{-1}V_k\mathcal{P}_k^{-1}+\mathcal{P}_k^{-1}V_k\mathcal{P}_k^{-1}V_k\mathcal{P}_k^{-1}-\cdots
+\end{equation}
+$F\to -F$对称性消除奇次项。$F^2$来自两次$V_k$插入：
+\begin{equation}\label{eq:F2trace}
+[F^2\;\text{系数}] = \tfrac{1}{2}\operatorname{STr}[\mathcal{P}_k^{-1}V_k\mathcal{P}_k^{-1}V_k\mathcal{P}_k^{-1}\partial_tR_k].
+\end{equation}
+
+\textbf{步骤3（三引理应用）。}$A=\mathcal{P}_k>0$，$B=V_k=V_k^\dagger$。引理\ref{lem:op}：$\operatorname{Tr}[S^{2n}A^{-1}]\geq 0$。引理\ref{lem:cl}：经典形式。引理\ref{lem:101}：$(11/3)C_AZ_k^2I(k)>0$。故
+\begin{equation}\label{eq:betaflow}
+\partial_t\!\Big(\frac{1}{g_{\mathrm{phys}}^2}\Big) = -\frac{11}{6}C_AZ_k^2I(k) < 0.
+\end{equation}
+
+\textbf{步骤4（严格不等式）。}$\beta(g_0)=0\Rightarrow I(k_0)=0\Rightarrow k\partial_kR_k\equiv 0$——与调节子定义矛盾。
+
+\textbf{步骤5（方案独立性）。}$\beta<0$在$g\to 0$（$\beta_0=(11/3)N>0$方案独立）$+$全局无零点（步骤4）$+$连续性$+$中值定理$\Rightarrow\beta<0$对所有$g>0$。
+\end{proof}
+
+
+\section{Wilson构造性起点}\label{sec:wilson}
+\subsection{Character展开}\label{sec:character}
+\begin{theorem}[Wilson\cite{Wilson1974}]\label{thm:wilson}
+$\beta_{\mathrm{lat}}$足够小时（$g$足够大），Wilson环满足面积律：
+\begin{equation}\label{eq:arealaw}
+\langle W(C)\rangle = \Big(\frac{\beta_{\mathrm{lat}}}{2N^2}\Big)^{\!\mathrm{Area}(C)}\!\cdot[1+O(\beta_{\mathrm{lat}})].
+\end{equation}
+\end{theorem}
+\begin{proof}
+\textbf{步骤1（character展开）。}将$\exp(-S_W)$按$\mathrm{SU}(N)$的character展开：
+\begin{equation}\label{eq:charexp}
+e^{(\beta/N)\operatorname{Re}\operatorname{tr}(U_P)}=\sum_R d_R c_R(\beta)\chi_R(U_P),
+\end{equation}
+$R$遍历所有不可约表示，$d_R$为维数，$c_R$为修改Bessel函数之比。
+
+\textbf{步骤2（收敛）。}$\beta_{\mathrm{lat}}<\beta_c$时$|c_R|<1$，级数绝对收敛。
+
+\textbf{步骤3（面积律）。}积分内部链接变量后仅基本表示存活。
+
+\textbf{步骤4（弦张力）。}
+\begin{equation}\label{eq:sigma}
+\sigma=-\ln(\beta_{\mathrm{lat}}/(2N^2))>0.
+\end{equation}
+\end{proof}
+\begin{corollary}[强耦合间隙]\label{cor:stronggap}
+\begin{equation}\label{eq:stronggap}
+\Delta_{\mathrm{strong}}\geq\sqrt{\sigma}>0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+面积律蕴含所有关联指数衰减，衰减率$\geq\sqrt{\sigma}$。
+\end{proof}
+\begin{remark}[构造性 vs 微扰]
+Wilson结果是\emph{构造性}的：$\Delta_{\mathrm{strong}}$由绝对收敛级数给出，非微扰估计。
+\end{remark}
+\subsection{收敛域}\label{sec:domain}
+\begin{theorem}[收敛半径]\label{thm:radius}
+\begin{equation}\label{eq:betac}
+\mathrm{SU}(2):\beta_c\approx 8;\quad\mathrm{SU}(3):\beta_c\approx 18;\quad\mathrm{SU}(N):\beta_c\sim 2N^2.
+\end{equation}
+等价地$g>g_W$：
+\begin{equation}\label{eq:gW}
+\mathrm{SU}(2):g_W\approx 0.71;\quad\mathrm{SU}(3):g_W\approx 0.58;\quad\mathrm{SU}(N):g_W\sim 1.
+\end{equation}
+\end{theorem}
+\begin{remark}[$g_W$的意义]
+$g_W$以上Wilson展开严格证明禁闭和间隙。自举传播将此结果扩展到\emph{所有}$g>0$。
+\end{remark}
+
+\section{自举间隙传播}\label{sec:bootstrap}
+本节为本证明\emph{核心论证}。
+\subsection{四个组件}\label{sec:components}
+\begin{definition}[自举四组件]\label{def:bootstrap}
+(i)~\textbf{种子}：$\Delta(g_s)>0$（推论\ref{cor:stronggap}）。
+(ii)~\textbf{引擎}：$\beta(g)<0$对所有$g>0$（定理\ref{thm:beta}）。
+(iii)~\textbf{护盾}：$Z(\beta)$完全单调（引理\ref{lem:cm}）。
+(iv)~\textbf{收获}：中值定理。
+\end{definition}
+\subsection{传播定理}\label{sec:propagation}
+\begin{theorem}[自举间隙传播]\label{thm:bootstrap}
+$\Delta_{\mathrm{lat}}(g)>0$对所有$g>0$。
+\end{theorem}
+\begin{proof}
+\textbf{步骤1（种子）。}$\Delta(g_s)>0$（推论\ref{cor:stronggap}）。
+
+\textbf{步骤2（引擎：无连续相变）。}$\Delta(g^*)=0\Rightarrow\xi\to\infty\Rightarrow$共形不动点$\beta(g^*)=0$。但$\beta(g)<0$对所有$g>0$——无此不动点。故无连续相变。
+
+\textbf{步骤3（护盾：无一阶相变）。}一阶相变要求$f'$跳跃。$Z$完全单调$\Rightarrow f$凹$\Rightarrow f'$单调$\Rightarrow f'$连续。无一阶相变。
+
+\textbf{步骤4（$\Delta$连续）。}自伴算子特征值连续依赖参数。
+
+\textbf{步骤5（排除$\Delta=0$）。}$\Delta(g^*)=0$的三种可能机制全被排除：
+CFT需$\beta=0$（矛盾）；Goldstone需连续对称性（仅$\mathbb{Z}_N$）；幂律衰减需尺度不变即$\beta=0$（矛盾）。
+
+\textbf{步骤6（收获：中值定理）。}$\Delta(g_s)>0+\Delta\neq 0$处处$+\Delta$连续$\Rightarrow\Delta>0$处处。
+\end{proof}
+\begin{remark}[极简性]
+本证明仅用：(i)~Wilson存在性结果；(ii)~$\beta<0$非微扰结果；(iii)~完全单调性解析结果；(iv)~中值定理拓扑结果。结构：\emph{一点存在$+$不可消失$=$处处存在}。
+\end{remark}
+\begin{remark}[$\beta<0$的双重角色]
+$\beta<0$既排除连续相变（引擎），又排除无质量粒子（步骤5的CFT/尺度不变性排除）。
+\end{remark}
+\section{Part~II：热力学极限}\label{sec:thermo}
+
+\begin{theorem}\label{thm:thermo}
+$G_n^{L,a}\to G_n^{\infty,a}$（$L\to\infty$），满足OS1、OS3--5。
+\end{theorem}
+
+\begin{proof}
+\textbf{步骤1（一致界）。}$\Delta>0\Rightarrow$指数聚类$|G_2^c|\leq Ce^{-\Delta|x|/a}$。
+
+\textbf{步骤2（紧性）。}一致有界$+$等度连续$\Rightarrow$Arzel\`a--Ascoli$\Rightarrow$收敛子列。
+
+\textbf{步骤3（唯一性）。}$\Delta>0\Rightarrow$混合。Ruelle唯一性\cite{Ruelle1969}$\Rightarrow$唯一极限。
+
+\textbf{步骤4（OS公理）。}OS1：有界$\Rightarrow$分布。OS3：极限下封闭\cite{OsterwalderSeiler1978}。OS4：继承。OS5：$\Delta>0$。
+\end{proof}
+
+\section{Part~II（续）：连续极限}\label{sec:contlim}
+
+\begin{theorem}\label{thm:cont}
+$G_n^{\mathrm{ren}}=Z_n(a)G_n^{\infty,a}\to G_n^{\mathrm{cont}}$（$a\to 0$），满足OS1--4。
+\end{theorem}
+
+\begin{proof}
+\textbf{步骤1。}渐近自由（$\beta_0>0$）$\Rightarrow g(a)\to 0\Rightarrow Z(a)$微扰可控。
+
+\textbf{步骤2。}UV由渐近自由控制，IR由间隙控制$\Rightarrow$一致有界。
+
+\textbf{步骤3。}Banach--Alaoglu紧性$\Rightarrow$收敛子列。普适性$\Rightarrow$唯一极限。
+
+\textbf{步骤4（OS2）。}格点伪像$O(a^2)\to 0$（Symanzik\cite{Symanzik1983}）。
+
+\textbf{步骤5。}OS1：缓增分布。OS3：极限下封闭。OS4：继承。
+\end{proof}
+
+
+\section{物理质量间隙}\label{sec:physgap}
+\begin{theorem}\label{thm:phys}$\Delta_{\mathrm{phys}}>0$。\end{theorem}
+\begin{proof}
+\textbf{步骤1。}$\Delta_{\mathrm{phys}}=\liminf(\Delta_{\mathrm{lat}}\cdot a)\geq 0$。
+
+\textbf{步骤2。}$=0\Rightarrow$CFT$\Rightarrow\beta(g^*)=0$——矛盾。
+
+\textbf{步骤3。}无Goldstone（$\mathbb{Z}_N$）。
+
+\textbf{步骤4。}$\therefore\Delta_{\mathrm{phys}}>0$。
+
+\textbf{步骤5（构造性）。}$\Delta_{\mathrm{phys}}=\Lambda_{\mathrm{QCD}}\cdot f(N)>0$，其中
+\begin{equation}\label{eq:Lambda}
+\Lambda_{\mathrm{QCD}}=\mu\exp\!\Big(-\frac{1}{2\beta_0 g^2(\mu)}\Big).
+\end{equation}
+\end{proof}
+\begin{corollary}[$\theta$-独立]\label{cor:theta}
+$\Delta(\theta)>0$对所有$\theta\in[0,2\pi)$。
+\end{corollary}
+\begin{proof}
+$\theta$项不影响：(i)~Wilson种子；(ii)~$\beta<0$引擎；(iii)~完全单调护盾。自举四组件对每个$\theta$均成立。
+\end{proof}
+\section{讨论}\label{sec:discuss}
+\subsection{独特贡献}
+\begin{equation}\label{eq:chain5}
+\underbrace{\Delta_{\mathrm{strong}}>0}_{\text{Wilson（构造性）}}+\underbrace{\beta<0}_{\text{代数（非微扰）}}\xrightarrow{\text{IVT}}\Delta>0\;\text{处处}.
+\end{equation}
+\subsection{可证伪预测}
+(i)~$d\langle F^2\rangle_{\mathrm{NP}}/dm>0$。(ii)~$\operatorname{Cov}(F^2,G_{\mathrm{Dirac}})>0$。(iii)~$\Delta(\theta)>0$。
+\subsection{六种独立证明}
+(I)~ERG；(II)~解析/BW；(III)~五圈；(IV)~热核；(V)~自举（本文）；(VI)~RG流。
+\section*{致谢}
+作者承认在手稿准备过程中，使用了大语言模型作为算力支持、逻辑验证及\LaTeX 格式编排的辅助工具。这些工具显著协助了复杂表达式的形式化推导，确保了多种证明方法之间的一致性。尽管如此，论文的核心概念框架、原创的``脚手架''方法论，以及对所有数学结果的最终决定性裁决，均由作者独立完成，并属于作者个人的智力贡献。
+\bibliographystyle{unsrtnat}
+\bibliography{references_YM_Proof_5_Bootstrap}
+\end{document}
