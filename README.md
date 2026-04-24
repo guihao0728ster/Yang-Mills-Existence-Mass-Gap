@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/1218593353.svg)](https://doi.org/10.5281/zenodo.19717224)
 # Six Independent Approaches to the Yang–Mills Mass Gap
 
 # 杨–米尔斯质量间隙的六种独立证明
